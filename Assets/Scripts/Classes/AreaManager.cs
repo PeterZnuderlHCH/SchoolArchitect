@@ -23,7 +23,6 @@ namespace RPG
             {
                 _instance = value;
             }
-
         }
 
         public List<Area> areas = new List<Area>();
@@ -98,7 +97,7 @@ namespace RPG
                         if(NPCManager.instance.NPCs[i].GetType() == typeof(student))
                         {
                             Tile t = area.tiles[Random.Range(0, area.tiles.Count)];
-                            Task task = new Task(new Vector2(t.x, t.y), typeof(student), 0);
+                            Task task = new Task(t, typeof(student), 0);
                             NPCManager.instance.NPCs[i].GiveTask(task);
                         }
                     }
@@ -109,7 +108,7 @@ namespace RPG
                         if (NPCManager.instance.NPCs[i].GetType() == typeof(teacher))
                         {
                             Tile t = area.tiles[Random.Range(0, area.tiles.Count)];
-                            Task task = new Task(new Vector2(t.x, t.y), typeof(teacher), 0);
+                            Task task = new Task(t, typeof(teacher), 0);
                             NPCManager.instance.NPCs[i].GiveTask(task);
                         }
                     }
@@ -120,7 +119,7 @@ namespace RPG
                         if (NPCManager.instance.NPCs[i].GetType() == typeof(officestaff))
                         {
                             Tile t = area.tiles[Random.Range(0, area.tiles.Count)];
-                            Task task = new Task(new Vector2(t.x, t.y), typeof(officestaff), 0);
+                            Task task = new Task(t, typeof(officestaff), 0);
                             NPCManager.instance.NPCs[i].GiveTask(task);
                         }
                     }
@@ -131,7 +130,7 @@ namespace RPG
                         if (NPCManager.instance.NPCs[i].GetType() == typeof(student))
                         {
                             Tile t = area.tiles[Random.Range(0, area.tiles.Count)];
-                            Task task = new Task(new Vector2(t.x, t.y), typeof(student), 0);
+                            Task task = new Task(t, typeof(student), 0);
                             NPCManager.instance.NPCs[i].GiveTask(task);
                         }
                     }
@@ -142,7 +141,7 @@ namespace RPG
                         if (NPCManager.instance.NPCs[i].GetType() == typeof(cleaner))
                         {
                             Tile t = area.tiles[Random.Range(0, area.tiles.Count)];
-                            Task task = new Task(new Vector2(t.x, t.y), typeof(cleaner), 0);
+                            Task task = new Task(t, typeof(cleaner), 0);
                             NPCManager.instance.NPCs[i].GiveTask(task);
                         }
                     }

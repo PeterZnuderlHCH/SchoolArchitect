@@ -34,8 +34,9 @@ public class UIController : MonoBehaviour {
         int.TryParse(inputTargetX.text, out x);
         int.TryParse(inputTargetY.text, out y);
         Vector2 target = new Vector2(x, y);
+        Tile t = TileGenerator.map[x][y];
 
-        Task task = new Task(target,typeof(npc), 0);
+        Task task = new Task(t,typeof(npc), 0);
         TaskManager.instance.AddTaskToQueue(task);
 
         //selectedNPCgo.GetComponent<npc>().SetTargetLocation(x,y);
@@ -61,9 +62,10 @@ public class UIController : MonoBehaviour {
     {
         for (int i = 0; i < 100; i++)
         {
-            Vector2 target = new Vector2(Random.Range(0,100), Random.Range(0, 100));
+            Vector2 target = new Vector2((int)Random.Range(0,100), Random.Range(0, 100));
+            Tile t = TileGenerator.map[(int)target.x][(int)target.y];
 
-            Task task = new Task(target, typeof(npc), 0);
+            Task task = new Task(t, typeof(npc), 0);
             TaskManager.instance.AddTaskToQueue(task);
 
         }

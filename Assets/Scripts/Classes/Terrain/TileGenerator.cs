@@ -4,23 +4,30 @@ using UnityEngine;
 
 public class TileGenerator : MonoBehaviour {
 
+    public static TileGenerator instance;
+
     public GameObject tilePref;//Reference to our Tile templete
 	//Map/Graph
 	public static List<List<Tile>> map = new List<List<Tile>>(); //All the tiles of our map
 	public static int MapHeight, MapWidth; //Width and height of our map that we can access from outher classes => (static)
 
+    [SerializeField] int tilesPerFrame = 300;
+
     private void Awake()//A function that is called at the creation of this object in game
     {
-        MapHeight = 100;
-        MapWidth = 100;
-		GenerateMap(MapHeight,MapWidth);
+        if(instance == null) { instance = this; }
+        if(instance != this) { Destroy(this); }
+        MapHeight = 250;
+        MapWidth = 500;
+		StartCoroutine(GenerateMap(MapHeight,MapWidth));
         GetNeighbours(MapHeight, MapWidth);
     }
 
     //Create a map based on the desired width and height
 
-    public void GenerateMap(int rows, int columns)
+    IEnumerator GenerateMap(int rows, int columns)
     {
+        int count = 0;
         for (int i = 0; i < columns; i++)
         {
             //Create a temporary list for every column
@@ -42,9 +49,15 @@ public class TileGenerator : MonoBehaviour {
                 int rand = Random.Range(0, 10);
                 //if(rand < 5) { t.SetDifficulty(5f); }
                 //if(rand < 1) { t.ChangeWalkable(false); }
+                count++;
+                if(count % tilesPerFrame == 0)
+                {
+                    yield return null;
+                }
             }
             //Add the list for the full column to the map - we end up wit ha list of lists of tiles
 			map.Add (lst);
+            
         }
     }
 
