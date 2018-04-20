@@ -17,10 +17,10 @@ public class TileGenerator : MonoBehaviour {
     {
         if(instance == null) { instance = this; }
         if(instance != this) { Destroy(this); }
-        MapHeight = 250;
-        MapWidth = 500;
+        MapHeight = 25;
+        MapWidth = 50;
 		StartCoroutine(GenerateMap(MapHeight,MapWidth));
-        GetNeighbours(MapHeight, MapWidth);
+        
     }
 
     //Create a map based on the desired width and height
@@ -56,9 +56,9 @@ public class TileGenerator : MonoBehaviour {
                 }
             }
             //Add the list for the full column to the map - we end up wit ha list of lists of tiles
-			map.Add (lst);
-            
+			map.Add (lst);   
         }
+        GetNeighbours(MapHeight, MapWidth);
     }
 
     //A function that generates a list of all neghbours of a certain tile
