@@ -32,11 +32,19 @@ namespace RPG
         Area newArea;
         Tile startPosition;
         Tile endPosition;
+        static int AreasCreated = 0;
 
         void Awake()
         {
             if(instance == null) { instance = this; }
             else if (instance != this) { Destroy(this); }
+
+            //TODO: Subscribe to the delegate of the bert thank you
+        }
+
+        private void StartDrawing()
+        {
+            startDrawing = true;
         }
 
         public bool HandleClick(Tile tile, bool down, bool up)
@@ -64,7 +72,8 @@ namespace RPG
 
         void PrepareForDrawing()
         {
-            newArea = new Area("Area 51", AreaType.Office, Random.ColorHSV());
+            newArea = new Area("Area 51", AreaType.Office, Random.ColorHSV(), AreasCreated);
+            AreasCreated++;
             isBeingDrawn = true;
             startDrawing = false;
         }
@@ -78,13 +87,41 @@ namespace RPG
         {
             endPosition = position;
             isBeingDrawn = false;
-            areas.Add(newArea);//May be a problem
-            GatherNPCs(newArea);
+            Area temp = new RPG.Area(newArea);
+            Debug.Log("is reachy?");
+            areas.Add(temp);
+            GatherNPCs(temp);
+            newArea = null;
         }
 
         private void UpdateDrawing(Tile temporaryEnd)
         {
             newArea.UpdateArea(startPosition, temporaryEnd);
+        }
+
+        private void Merge(Area oldarea, Area newarea)
+        {
+            if (oldarea.type == newarea.type && oldarea != newarea)
+            {
+                for (int i = 0; i < oldarea.tiles.Count; i++)
+                {
+                    newarea.AddTile(oldarea.tiles[i]);
+                    oldarea.RemoveTile(oldarea.tiles[i]);
+                }
+            }
+
+            else if (oldarea.type != newarea.type && oldarea != newarea)
+            {
+                for (int i = 0; i < oldarea.tiles.Count; i++)
+                {
+                    Tile tile = oldarea.tiles[i];
+                    if (newarea.tiles.Contains(tile))
+                    {
+                        newarea.AddTile(tile);
+                        oldarea.RemoveTile(tile);
+                    }
+                }
+            }
         }
 
         void GatherNPCs(Area area)

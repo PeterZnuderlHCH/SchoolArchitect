@@ -10,6 +10,7 @@ namespace RPG
     public class Area
     {
         string name;
+        public int id;
         public AreaType type;
         public List<Tile> tiles;
         Color colour;
@@ -20,22 +21,49 @@ namespace RPG
             type = AreaType.Storage;
             tiles = new List<Tile>();
             colour = new Color(1f,0f,0f);
+            id = 1;
         }
 
-        public Area(string _name, AreaType _type, Color _colour)
+        public Area(Area old)
+        {
+            name = old.name;
+            type = old.type;
+            tiles = old.tiles;
+            colour = old.colour;
+            id = old.id;
+        }
+
+        public Area(string _name, AreaType _type, Color _colour, int _id)
         {
             name = _name;
             type = _type;
             tiles = new List<Tile>();
             colour = _colour;
+            id = _id;
         }
 
-        public Area(string _name, AreaType _type, List<Tile> _tiles, Color _colour)
+        public Area(string _name, AreaType _type, List<Tile> _tiles, Color _colour, int _id)
         {
             name = _name;
             type = _type;
             tiles = _tiles;
             colour = _colour;
+        }
+
+        public void AddTile(Tile tile)
+        {
+            if (!tiles.Contains(tile))
+            {
+                tiles.Add(tile);
+            }
+        }
+
+        public void RemoveTile(Tile tile)
+        {
+            if (tiles.Contains(tile))
+            {
+                tiles.Remove(tile);
+            }
         }
 
         public void UpdateArea(Tile start, Tile end)
@@ -50,12 +78,27 @@ namespace RPG
             {
                 for (int y = miny; y < maxy; y++)
                 {
-                    temp.Add(TileGenerator.map[x][y]);
-                    TileGenerator.map[x][y].ChangeColourTo(colour);
+                    if (!temp.Contains(TileGenerator.map[x][y]))
+                    {
+                        temp.Add(TileGenerator.map[x][y]);
+                        TileGenerator.map[x][y].ChangeColourTo(colour);
+                    }
                 }
             }
 
-            tiles = temp;
+            for (int i = 0; i < temp.Count; i++)
+            {
+                if (!tiles.Contains(temp[i]))
+                {
+                    tiles.Add(temp[i]);
+                }
+            }
+
+        }
+
+        public List<Tile> GetContents()
+        {
+            return tiles;
         }
     }
 }
